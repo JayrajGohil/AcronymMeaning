@@ -3,7 +3,7 @@ Acronym meaning
 
 This is a simple application to check meanings of Acronyms or Initialisms.
 
-App supports iOS 8.0 and later.
+App supports iOS 8.1 and later.
 
 Application is developed in Objective C with Xcode 8.1
 
