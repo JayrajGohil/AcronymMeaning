@@ -43,17 +43,10 @@
 - (void)getResponseForURLString:(NSString *)urlString parameters:(NSDictionary *)param success:(ServiceSuccessBlock)success failure:(ServiceFailureBlock) failure
 {
     
-    /*
-     These are the accepted content types in AFURLResponseSerialization.
-     @"application/json", @"text/json", @"text/javascript"
-     
-     But below api is sending "Content-Type" = "text/plain;
-     http://www.nactem.ac.uk/software/acromine/dictionary.py
-     */
-    // Below line is to accept response of any type
-    // Better solution is to ask the Server to send content type as "application/json"
+    // setup nil to content types
     self.manager.responseSerializer.acceptableContentTypes = nil;
     
+    // GET response from url with parameter from AFNetworking and reply success or failure.
     [self.manager GET:urlString parameters:param progress:nil success:^(NSURLSessionDataTask *task, id responseObject){
         if (success) {
             AcronymResult *result = [[AcronymResult alloc] initWithDictionary:[responseObject firstObject]];

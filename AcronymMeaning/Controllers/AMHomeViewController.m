@@ -26,14 +26,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    // Load custom cell to Tableview.
     UINib *cellNib = [UINib nibWithNibName:@"AcronymVariationTableViewCell" bundle:nil];
     [self.tblAcronymMeaning registerNib:cellNib forCellReuseIdentifier:@"AcronymVariationTableViewCell"];
     self.tblAcronymMeaning.tableFooterView = [UIView new];
     
+    // Adjust dynamic height of cell
     self.tblAcronymMeaning.rowHeight = UITableViewAutomaticDimension;
     self.tblAcronymMeaning.estimatedRowHeight = RowHeight;
     
+    // reset data
     [self resetData];
+    
+    // set characterset which are disallowed in searchbar
     self.disallowedCharacters = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
 }
 
@@ -43,20 +48,35 @@
 }
 
 #pragma mark - Custom Methods
+/*
+ * @discussion - This method reset data and hide tableview.
+ */
 - (void)resetData
 {
     self.tblAcronymMeaning.hidden = YES;
     self.acroResult = nil;
 }
 
+/*
+ * @discussion - This method fetch the meaning of acronym from web service.
+ * @acronym Acronym/Initialisms to be fetched meaning from service *
+ */
 - (void)searchMeaningOfAchronym:(NSString *)acronym
 {
+    
+    // Check internet connection
     if ([self connectedToNetwork]) {
+        // Load progressview
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        // set paramater for webservice
         NSDictionary *param = @{@"sf": acronym};
+        // call webservice to fetch meaning
         [[AMServiceManager sharedManager] getResponseForURLString:kURLBase parameters:param success:^(NSURLSessionDataTask *task, AcronymResult *acronymResult) {
             
+            // Hide progressview
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            // check result and if it is there so assign result and load to tableview.
             self.acroResult = acronymResult;
             if (self.acroResult && self.acroResult.lfs.count > 0) {
                 [self.tblAcronymMeaning setHidden:NO];
@@ -69,6 +89,7 @@
             }
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
             
+            // Hide progressview
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             
             // show error alert with error description
@@ -76,12 +97,16 @@
         }];
     }
     else{
+        // show error alert with error description for no internet connection
         [self showErrorAlertWithTitle:NSLocalizedString(@"NoInternetTitle", @"") message:NSLocalizedString(@"NoInternetMessage", @"")];
     }
 }
 
+/*
+ * @discussion - This method check internet connection is available or not.
+ */
 - (BOOL) connectedToNetwork{
-    Reachability* reachability = [Reachability reachabilityWithHostName:@"google.com"];
+    Reachability* reachability = [Reachability reachabilityWithHostName:@"nactem.ac.uk"];
     NetworkStatus remoteHostStatus = [reachability currentReachabilityStatus];
     
     if (remoteHostStatus == ReachableViaWWAN || remoteHostStatus == ReachableViaWiFi)
@@ -91,6 +116,11 @@
     return NO;
 }
 
+/*
+ * @discussion - This method check internet connection is available or not.
+ * @title String to set title *
+ * @message String to set message of alert *
+ */
 -(void)showErrorAlertWithTitle:(NSString *) title message:(NSString *) message{
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];

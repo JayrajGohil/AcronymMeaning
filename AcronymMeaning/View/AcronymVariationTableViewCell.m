@@ -15,6 +15,7 @@
     [super awakeFromNib];
     // Initialization code
     
+    // set font to label
     [self.lblTitle setFont:kFontHelveticaNeue_Bold];
     [self.lblSince setFont:kFontHelveticaNeue_desc];
     [self.lblFreq setFont:kFontHelveticaNeue_desc];

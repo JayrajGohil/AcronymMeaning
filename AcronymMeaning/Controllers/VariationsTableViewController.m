@@ -25,10 +25,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
+    // Load Custom cell nib to Tableview
     UINib *cellNib = [UINib nibWithNibName:@"AcronymVariationTableViewCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:@"AcronymVariationTableViewCell"];
     self.tableView.tableFooterView = [UIView new];
     
+    // adjust tableveiw dynamic height
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = RowHeight;
     

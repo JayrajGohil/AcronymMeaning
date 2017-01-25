@@ -9,11 +9,6 @@
 #ifndef AMConstants_h
 #define AMConstants_h
 
-
-extern NSString *const AIBaseURL;
-extern NSString *const kAppFontName;
-extern NSString *const kAppBoldFontName;
-
 #define kURLBase @"http://www.nactem.ac.uk/software/acromine/dictionary.py"
 #define kAppFontName @"HelveticaNeue"
 #define kAppBoldFontName @"HelveticaNeue-Bold"
